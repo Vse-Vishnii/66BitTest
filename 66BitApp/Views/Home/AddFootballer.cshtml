@@ -1,0 +1,56 @@
+﻿@model _66BitApp.Models.Footballer
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<form asp-action="Create" asp-controller="Home" >
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td><input type="text" asp-for="Name" /> </td>
+        </tr>
+        <tr>
+            <td>Surname:</td>
+            <td><input type="text" asp-for="Surname" /></td>
+        </tr>
+        <tr>
+            <td>Sex:</td>
+            <td>
+                @foreach (var sex in Enum.GetValues(typeof(Sex)))
+                {
+                    <input type="radio" asp-for="Sex" value="@sex" />@sex<br />
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>Birth date:</td>
+            <td><input type="date" asp-for="DateOfBirth"/></td>
+        </tr>
+        <tr>
+            <td>Country:</td>
+            <td>
+                <select asp-for="Country">
+                    <option value="">Select a country</option>
+                    @foreach (var country in Enum.GetValues(typeof(Country)))
+                    {
+                        <option value="@country"/>@country<br/>
+                    }
+                </select>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>Team:</td>
+            <td>
+                <input asp-for="TeamName" type="text" list="teams"/>
+                <datalist id="teams">
+                    @foreach (var country in Enum.GetValues(typeof(Country)))
+                    {
+                        <option value="@country"/>@country<br/>
+                    }
+                </datalist>
+            </td>
+        </tr>
+        <td><input type="submit" value="Create"/> </td>
+    </table>
+</form>

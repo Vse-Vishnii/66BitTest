@@ -1,0 +1,117 @@
+﻿@using  _66BitApp.ViewModels
+@model FootballViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+@foreach (Footballer footballer in Model.Footballers)
+{
+    <div class="card">
+        <form asp-action="Update" asp-controller="Home" >
+            <table>
+                <input type="hidden" value="@footballer.Id" asp-for="@footballer.Id"/>
+                <tr>
+                    <td>Name:</td>
+                    <td><input type="text" asp-for="@footballer.Name" value="@footballer.Name"/> </td>
+                </tr>
+                <tr>
+                    <td>Surname:</td>
+                    <td><input type="text" asp-for="@footballer.Surname" value="@footballer.Surname"/></td>
+                </tr>
+                <tr>
+                    <td>Sex:</td>
+                    <td>
+                        @foreach (Sex sex in Enum.GetValues(typeof(Sex)))
+                        {
+                            if (footballer.Sex == sex)
+                            {
+                                <input type="radio" asp-for="@footballer.Sex" value="@sex" checked="checked"/>@sex<br/>
+                            }
+                            else
+                            {
+                                <input type="radio" asp-for="@footballer.Sex" value="@sex"/>@sex<br/>
+                            }
+
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>Birth date:</td>
+                    <td>
+                        <input type="date" asp-for="@footballer.DateOfBirth"
+                               value="@footballer.DateOfBirth.ToString("yyyy-MM-dd")"/></td>
+                </tr>
+                <tr>
+                    <td>Country:</td>
+                    <td>
+                        <select asp-for="@footballer.Country">
+                            <option value="">Select a country</option>
+                            @foreach (Country country in Enum.GetValues(typeof(Country)))
+                            {
+                                if (footballer.Country == country)
+                                {
+                                    <option value="@country" selected="selected"/>@country<br/>
+                                }
+                                else
+                                {
+                                    <option value="@country"/>@country<br/>
+                                }
+                            }
+                        </select>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>Team:</td>
+                    <td>
+                        <input asp-for="@footballer.TeamName" type="text" list="teams"/>
+                        <datalist id="teams">
+                            <option selected="selected" value="@footballer.TeamName">@footballer.TeamName</option>
+                            @foreach (var team in Model.Teams)
+                            {
+                                if (footballer.TeamName.Equals(team.Name))
+                                {
+                                    <option value="@team" selected="selected"/>
+                                }
+                                else
+                                {
+                                    <option value="@team"/><br/>
+                                }
+                            }
+                        </datalist>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="Update"/>
+                        
+                    </td>
+                    <td>
+                        <input type="submit" value="Delete" asp-action="Delete"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+}
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       class="btn btn-outline-dark">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Back
+    </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       class="btn btn-outline-dark">
+        Next
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}
+
+
