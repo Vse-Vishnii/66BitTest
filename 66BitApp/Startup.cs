@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using _66BitApp.DB;
 using _66BitApp.Helpers;
@@ -27,8 +29,8 @@ namespace _66BitApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<UserContext>(c =>
-                    c.UseSqlite(Configuration.GetConnectionString(PathFinder.GetConnectionPath())));
+            services.AddDbContext<UserContext>(optionsBuilder =>
+                optionsBuilder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllersWithViews();
             services.AddMvc();
 

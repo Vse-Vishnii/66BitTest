@@ -30,7 +30,7 @@ namespace _66BitApp.Repositories
         public async virtual Task<TEntity> Add(TEntity entity)
         {
             db.Add(entity);
-            await db.SaveChangesAsync();
+            db.SaveChanges();
             return entity;
         }
 
